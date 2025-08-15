@@ -1,9 +1,15 @@
 import { useState } from "react";
+import Navbar from "./components/Navbar";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold text-blue-500">Hello World!</h1>
+      <Navbar></Navbar>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </>
   );
 }
