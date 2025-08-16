@@ -6,10 +6,13 @@ import Home from "./pages/Home";
 function App() {
   return (
     <>
+    <div className="bg-gray-900 h-full pb-2">
       <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<Home />} />
       </Routes>
+      
+    </div>
     </>
   );
 }

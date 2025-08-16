@@ -39,7 +39,6 @@ function Navbar() {
         </nav>
         <main className="pt-16"></main>
         </>
-        
     );
 
 }
