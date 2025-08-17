@@ -11,5 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://www.thesportsdb.com/api/v1/json/123", // API base
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""), // hapus "/api" depan
+      },
+    },
+  },
 })
-
