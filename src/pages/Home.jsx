@@ -1,6 +1,7 @@
 import Carousel from "@/components/Carousel";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { formatTanggal,formatJam } from "@/utils/formatTanggal";
 
 export default function Home() {
   const [league, setLeague] = useState([]);
@@ -22,38 +23,6 @@ export default function Home() {
     setNextLeague2(nextLeagueData2.events[0]);
   }
 
-  function formatTanggal(input) {
-    // daftar bulan
-    const bulan = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "Mei",
-      "Jun",
-      "Jul",
-      "Agust",
-      "Sep",
-      "Okt",
-      "Nov",
-      "Des",
-    ];
-
-    // pecah string
-    const [tahun, bulanStr, hari] = input.split("-");
-
-    // ambil bulan (index - 1 karena array mulai dari 0)
-    const namaBulan = bulan[parseInt(bulanStr) - 1];
-
-    // return format
-    return `${namaBulan}, ${parseInt(hari)} ${tahun}`;
-  }
-
-  function formatJam(input) {
-    let time = input;
-    let result = time.slice(0, 5);
-    return result;
-  }
   useEffect(() => {
     getData();
   }, []);
@@ -87,7 +56,7 @@ export default function Home() {
           </div>
         </div>
         {/* Bagian Tengah */}
-        <div className="lg:basis-7/12 text-white flex flex-col gap-5 ">
+        <div className="lg:basis-7/12 text-white flex flex-col gap-5 rounded-2xl">
           <div className="bg-gray-700 rounded-2xl flex-1">
             <img
               className="rounded-2xl object-fit h-full"
@@ -123,7 +92,7 @@ export default function Home() {
                 </div>
                 {nextLeague.strTime && (
                   <div className="flex-1 my-auto text-center bg-gray-500 rounded-md">
-                    {formatJam(nextLeague.strTime)}
+                    {formatJam(nextLeague.dateEvent,nextLeague.strTime)}
                   </div>
                 )}
                 <div className="flex flex-3 items-center gap-2 justify-end">
@@ -136,9 +105,9 @@ export default function Home() {
                 </div>
               </div>
               {nextLeague.dateEvent && (
-                <div className="hidden md:flex flex-1 text-center bg-gray-500 rounded-md">
+                <div className="hidden md:flex flex-1 text-center bg-gray-500 rounded-md px-1">
                   <p className="flex mx-auto">
-                    {formatTanggal(nextLeague.dateEvent)}
+                    {formatTanggal(nextLeague.dateEvent,nextLeague.strTime)}
                   </p>
                 </div>
               )}
@@ -168,7 +137,7 @@ export default function Home() {
                 </div>
                 {nextLeague2.strTime && (
                   <div className="flex-1 my-auto text-center bg-gray-500 rounded-md">
-                    {formatJam(nextLeague2.strTime)}
+                    {formatJam(nextLeague2.dateEvent,nextLeague2.strTime)}
                   </div>
                 )}
                 <div className="flex flex-3 items-center gap-2 justify-end">
@@ -181,9 +150,9 @@ export default function Home() {
                 </div>
               </div>
               {nextLeague2.dateEvent && (
-                <div className="hidden md:flex flex-1 text-center bg-gray-500 rounded-md">
+                <div className="hidden md:flex flex-1 text-center bg-gray-500 rounded-md px-1">
                   <p className="flex mx-auto ">
-                    {formatTanggal(nextLeague2.dateEvent)}
+                    {formatTanggal(nextLeague2.dateEvent,nextLeague2.strTime)}
                   </p>
                 </div>
               )}
@@ -191,8 +160,13 @@ export default function Home() {
           </div>
         </div>
         {/* Bgaian kanan */}
-        <div className="hidden md:flex lg:basis-3/12 bg-gray-700 text-white">
-          c
+        <div className="hidden md:flex lg:basis-3/12 bg-gray-700 text-white rounded-2xl">
+          <div className="p-4">
+            <div>h</div>
+            <div>h</div>
+            <div>
+            </div>
+          </div>
         </div>
       </div>
     </>
