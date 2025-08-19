@@ -1,12 +1,13 @@
 import Carousel from "@/components/Carousel";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { formatTanggal,formatJam } from "@/utils/formatTanggal";
+import { formatTanggal, formatJam } from "@/utils/formatTanggal";
 
 export default function Home() {
   const [league, setLeague] = useState([]);
   const [nextLeague, setNextLeague] = useState([]);
   const [nextLeague2, setNextLeague2] = useState([]);
+  const [standings, setStandings] = useState([]);
 
   async function getData() {
     let response = await fetch("/api/all_leagues.php");
@@ -21,6 +22,10 @@ export default function Home() {
     let res2 = await fetch("/api/eventsnextleague.php?id=4335");
     let nextLeagueData2 = await res2.json();
     setNextLeague2(nextLeagueData2.events[0]);
+
+    let res3 = await fetch("/api/lookuptable.php?l=4328&s=2025-2026");
+    let standings = await res3.json();
+    setStandings(standings.table);
   }
 
   useEffect(() => {
@@ -29,7 +34,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex justify-between m-5 gap-5">
+      <div className="flex justify-between p-2 sm:m-5 gap-5">
         {/* Bagian Kiri  */}
         <div className="hidden md:flex lg:basis-2/12 bg-gray-700  rounded-2xl">
           <div className="p-3 flex flex-col gap-4">
@@ -56,7 +61,7 @@ export default function Home() {
           </div>
         </div>
         {/* Bagian Tengah */}
-        <div className="lg:basis-7/12 text-white flex flex-col gap-5 rounded-2xl">
+        <div className="lg:basis-7/12 text-white flex flex-col gap-2 sm:gap-5 rounded-2xl">
           <div className="bg-gray-700 rounded-2xl flex-1">
             <img
               className="rounded-2xl object-fit h-full"
@@ -80,9 +85,9 @@ export default function Home() {
               </div>
             </div>
             {/* kotak Pertama */}
-            <div className="flex p-2 md:px-26 py-1 border border-gray-500 rounded-sm items-center gap-1 md:gap-10">
+            <div className="flex p-2 sm:px-22 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
               <div className="flex flex-3 ">
-                <div className="flex flex-3 items-center md:gap-2">
+                <div className="flex flex-3 items-center md:gap-2 justify-center md:justify-start">
                   <img
                     className="w-10 h-10"
                     src={nextLeague.strHomeTeamBadge}
@@ -92,10 +97,10 @@ export default function Home() {
                 </div>
                 {nextLeague.strTime && (
                   <div className="flex-1 my-auto text-center bg-gray-500 rounded-md">
-                    {formatJam(nextLeague.dateEvent,nextLeague.strTime)}
+                    {formatJam(nextLeague.dateEvent, nextLeague.strTime)}
                   </div>
                 )}
-                <div className="flex flex-3 items-center gap-2 justify-end">
+                <div className="flex flex-3 items-center gap-2 justify-center md:justify-end ">
                   {nextLeague.strAwayTeam}
                   <img
                     className="w-10 h-10"
@@ -107,7 +112,7 @@ export default function Home() {
               {nextLeague.dateEvent && (
                 <div className="hidden md:flex flex-1 text-center bg-gray-500 rounded-md px-1">
                   <p className="flex mx-auto">
-                    {formatTanggal(nextLeague.dateEvent,nextLeague.strTime)}
+                    {formatTanggal(nextLeague.dateEvent, nextLeague.strTime)}
                   </p>
                 </div>
               )}
@@ -125,9 +130,9 @@ export default function Home() {
               </div>
             </div>
             {/* Kotak Kdua */}
-            <div className="flex p-2 md:px-26 py-1 border border-gray-500 rounded-sm items-center gap-1 md:gap-10">
-              <div className="flex flex-3 ">
-                <div className="flex flex-3 items-center md:gap-2">
+            <div className="flex p-2 sm:px-22 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10" >
+              <div className="flex flex-3 text-sm">
+                <div className="flex flex-3 items-center md:gap-2 justify-center md:justify-start">
                   <img
                     className="w-10 h-10"
                     src={nextLeague2.strHomeTeamBadge}
@@ -137,10 +142,10 @@ export default function Home() {
                 </div>
                 {nextLeague2.strTime && (
                   <div className="flex-1 my-auto text-center bg-gray-500 rounded-md">
-                    {formatJam(nextLeague2.dateEvent,nextLeague2.strTime)}
+                    {formatJam(nextLeague2.dateEvent, nextLeague2.strTime)}
                   </div>
                 )}
-                <div className="flex flex-3 items-center gap-2 justify-end">
+                <div className="flex flex-3 items-center gap-2 justify-center md:justify-end">
                   {nextLeague2.strAwayTeam}
                   <img
                     className="w-10 h-10"
@@ -152,7 +157,7 @@ export default function Home() {
               {nextLeague2.dateEvent && (
                 <div className="hidden md:flex flex-1 text-center bg-gray-500 rounded-md px-1">
                   <p className="flex mx-auto ">
-                    {formatTanggal(nextLeague2.dateEvent,nextLeague2.strTime)}
+                    {formatTanggal(nextLeague2.dateEvent, nextLeague2.strTime)}
                   </p>
                 </div>
               )}
@@ -161,11 +166,24 @@ export default function Home() {
         </div>
         {/* Bgaian kanan */}
         <div className="hidden md:flex lg:basis-3/12 bg-gray-700 text-white rounded-2xl">
-          <div className="p-4">
-            <div>h</div>
-            <div>h</div>
-            <div>
+          <div className="p-5 flex flex-col gap-2 text-sm">
+            <div className="text-base font-medium">{nextLeague.strLeague} Standings</div>
+            <div className="flex gap-2 justify-between border-b-1">
+              <div className="min-w-2">Pos</div>
+              <div className="flex-1">Team</div>
+              <div className="text-center min-w-8">Point</div>
             </div>
+
+            {standings && (
+              standings.map((item,index) => {
+                return (
+                <div key={item.idTeam} className="flex gap-2 justify-between border-b-1">
+                  <div className="flex flex-col min-w-[22px] items-center ">{index + 1}</div>
+                  <div className="flex-1">{item.strTeam}</div>
+                  <div className="text-center min-w-8">{item.intPoints}</div>
+                </div>)
+              })
+            )}
           </div>
         </div>
       </div>
