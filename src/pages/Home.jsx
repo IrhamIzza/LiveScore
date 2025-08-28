@@ -9,28 +9,36 @@ export default function Home() {
   const [nextLeague2, setNextLeague2] = useState([]);
   const [standings, setStandings] = useState([]);
   const [standings2, setStandings2] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   async function getData() {
-    let response = await fetch("/api/all_leagues.php");
-    let data = await response.json();
-    let final = data.leagues;
-    setLeague(final);
+    try {
+      setLoading(true)
+      let response = await fetch("/api/all_leagues.php");
+      let data = await response.json();
+      let final = data.leagues;
+      setLeague(final);
 
-    let res = await fetch("/api/eventsnextleague.php?id=4328");
-    let nextLeagueData = await res.json();
-    setNextLeague(nextLeagueData.events[0]);
+      let res = await fetch("/api/eventsnextleague.php?id=4328");
+      let nextLeagueData = await res.json();
+      setNextLeague(nextLeagueData.events[0]);
 
-    let res2 = await fetch("/api/eventsnextleague.php?id=4335");
-    let nextLeagueData2 = await res2.json();
-    setNextLeague2(nextLeagueData2.events[0]);
+      let res2 = await fetch("/api/eventsnextleague.php?id=4335");
+      let nextLeagueData2 = await res2.json();
+      setNextLeague2(nextLeagueData2.events[0]);
 
-    let res3 = await fetch("/api/lookuptable.php?l=4328&s=2025-2026");
-    let standings = await res3.json();
-    setStandings(standings.table);
+      let res3 = await fetch("/api/lookuptable.php?l=4328&s=2025-2026");
+      let standings = await res3.json();
+      setStandings(standings.table);
 
-    let res4 = await fetch("/api/lookuptable.php?l=4335&s=2025-2026");
-    let standings2 = await res4.json();
-    setStandings2(standings2.table);
+      let res4 = await fetch("/api/lookuptable.php?l=4335&s=2025-2026");
+      let standings2 = await res4.json();
+      setStandings2(standings2.table);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -39,6 +47,11 @@ export default function Home() {
 
   return (
     <>
+    {loading && (
+      <div className="bg-black h-full w-full fixed z-10 flex items-center justify-center opacity-75">
+        <i className="ph ph-circle-notch animate-spin text-9xl text-white fixed z-20"></i>
+      </div>
+    )}
       <div className="flex justify-between p-2 sm:m-5 gap-5">
         {/* Bagian Kiri  */}
         <div className="hidden md:flex lg:basis-2/12 bg-gray-700  rounded-2xl">
@@ -105,7 +118,7 @@ export default function Home() {
                     {formatJam(nextLeague.dateEvent, nextLeague.strTime)}
                   </div>
                 )}
-                <div className="flex flex-3 items-center gap-2 justify-center md:justify-end ">
+                <div className="flex flex-3 items-center gap-2 justify-center md:text-right md:justify-end ">
                   {nextLeague.strAwayTeam}
                   <img
                     className="w-10 h-10"
@@ -135,7 +148,7 @@ export default function Home() {
               </div>
             </div>
             {/* Kotak Kdua */}
-            <div className="flex p-2 sm:px-22 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10" >
+            <div className="flex p-2 sm:px-22 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
               <div className="flex flex-3 text-sm">
                 <div className="flex flex-3 items-center md:gap-2 justify-center md:justify-start">
                   <img
@@ -150,7 +163,7 @@ export default function Home() {
                     {formatJam(nextLeague2.dateEvent, nextLeague2.strTime)}
                   </div>
                 )}
-                <div className="flex flex-3 items-center gap-2 justify-center md:justify-end">
+                <div className="flex flex-3 items-center gap-2 justify-center md:text-right md:justify-end">
                   {nextLeague2.strAwayTeam}
                   <img
                     className="w-10 h-10"
@@ -173,45 +186,71 @@ export default function Home() {
         <div className="hidden md:flex flex-col lg:basis-3/12 bg-gray-700 text-white rounded-2xl">
           {/* stadings 1 */}
           <div className="p-5 flex flex-col gap-2 text-sm">
-            <img src={`/logos/${standings[0]?.idLeague}.png`} alt="" className="w-8 h-8" />
-            <div className="text-base font-medium">{standings[0]?.strLeague} Standings</div>
+            <img
+              src={`/logos/${standings[0]?.idLeague}.png`}
+              alt=""
+              className="w-8 h-8"
+            />
+            <div className="text-base font-medium">
+              {standings[0]?.strLeague} Standings
+            </div>
             <div className="flex gap-2 justify-between border-b-1">
               <div className="min-w-2">Pos</div>
               <div className="flex-1">Team</div>
-              <div className="text-center min-w-8">Point</div>
+              <div className="text-center min-w-8">P</div>
+              <div className="text-center min-w-8">PTS</div>
             </div>
 
-            {standings && (
+            {standings &&
               standings.map((item, index) => {
                 return (
-                  <div key={item.idTeam} className="flex gap-2 justify-between border-b-1">
-                    <div className="flex flex-col min-w-[22px] items-center ">{index + 1}</div>
+                  <div
+                    key={item.idTeam}
+                    className="flex gap-2 justify-between border-b-1"
+                  >
+                    <div className="flex flex-col min-w-[22px] items-center ">
+                      {index + 1}
+                    </div>
                     <div className="flex-1">{item.strTeam}</div>
+                    <div className="text-center min-w-8">{item.intPlayed}</div>
                     <div className="text-center min-w-8">{item.intPoints}</div>
-                  </div>)
-              })
-            )}
+                  </div>
+                );
+              })}
           </div>
           {/* stadings 2 */}
           <div className="p-5 flex flex-col gap-2 text-sm">
-            <img src={`/logos/${standings2[0]?.idLeague}.png`} alt="" className="w-8 h-8" />
-            <div className="text-base font-medium">{standings2[0]?.strLeague} Standings</div>
+            <img
+              src={`/logos/${standings2[0]?.idLeague}.png`}
+              alt=""
+              className="w-8 h-8"
+            />
+            <div className="text-base font-medium">
+              {standings2[0]?.strLeague} Standings
+            </div>
             <div className="flex gap-2 justify-between border-b-1">
               <div className="min-w-2">Pos</div>
               <div className="flex-1">Team</div>
-              <div className="text-center min-w-8">Point</div>
+              <div className="text-center min-w-8">P</div>
+              <div className="text-center min-w-8">PTS</div>
             </div>
 
-            {standings2 && (
+            {standings2 &&
               standings2.map((item, index) => {
                 return (
-                  <div key={item.idTeam} className="flex gap-2 justify-between border-b-1">
-                    <div className="flex flex-col min-w-[22px] items-center ">{index + 1}</div>
+                  <div
+                    key={item.idTeam}
+                    className="flex gap-2 justify-between border-b-1"
+                  >
+                    <div className="flex flex-col min-w-[22px] items-center ">
+                      {index + 1}
+                    </div>
                     <div className="flex-1">{item.strTeam}</div>
+                    <div className="text-center min-w-8">{item.intPlayed}</div>
                     <div className="text-center min-w-8">{item.intPoints}</div>
-                  </div>)
-              })
-            )}
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>
