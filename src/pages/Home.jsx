@@ -13,31 +13,31 @@ export default function Home() {
 
   async function getData() {
     try {
-      setLoading(true)
-      let response = await fetch("/api/all_leagues.php");
-      let data = await response.json();
-      let final = data.leagues;
-      setLeague(final);
+      setLoading(true);
+      const [res1, res2, res3, res4, res5] = await Promise.all([
+        fetch("/api/all_leagues.php"),
+        fetch("/api/eventsnextleague.php?id=4328"),
+        fetch("/api/eventsnextleague.php?id=4335"),
+        fetch("/api/lookuptable.php?l=4328&s=2025-2026"),
+        fetch("/api/lookuptable.php?l=4335&s=2025-2026"),
+      ]);
 
-      let res = await fetch("/api/eventsnextleague.php?id=4328");
-      let nextLeagueData = await res.json();
-      setNextLeague(nextLeagueData.events[0]);
+      const data1 = await res1.json();
+      const data2 = await res2.json();
+      const data3 = await res3.json();
+      const data4 = await res4.json();
+      const data5 = await res5.json();
 
-      let res2 = await fetch("/api/eventsnextleague.php?id=4335");
-      let nextLeagueData2 = await res2.json();
-      setNextLeague2(nextLeagueData2.events[0]);
-
-      let res3 = await fetch("/api/lookuptable.php?l=4328&s=2025-2026");
-      let standings = await res3.json();
-      setStandings(standings.table);
-
-      let res4 = await fetch("/api/lookuptable.php?l=4335&s=2025-2026");
-      let standings2 = await res4.json();
-      setStandings2(standings2.table);
+      // set state
+      setLeague(data1.leagues);
+      setNextLeague(data2.events[0]);
+      setNextLeague2(data3.events[0]);
+      setStandings(data4.table);
+      setStandings2(data5.table);
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -47,11 +47,11 @@ export default function Home() {
 
   return (
     <>
-    {loading && (
-      <div className="bg-black h-full w-full fixed z-10 flex items-center justify-center opacity-75">
-        <i className="ph ph-circle-notch animate-spin text-9xl text-white fixed z-20"></i>
-      </div>
-    )}
+      {loading && (
+        <div className="bg-black h-full w-full fixed z-10 flex items-center justify-center opacity-85">
+          <i className="ph ph-circle-notch animate-spin text-9xl text-white fixed z-20"></i>
+        </div>
+      )}
       <div className="flex justify-between p-2 sm:m-5 gap-5">
         {/* Bagian Kiri  */}
         <div className="hidden md:flex lg:basis-2/12 bg-gray-700  rounded-2xl">
