@@ -35,7 +35,7 @@ export default function Home() {
       setStandings(data4.table);
       setStandings2(data5.table);
     } catch (error) {
-      setError(error.message);
+      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
