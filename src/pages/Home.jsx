@@ -2,6 +2,7 @@ import Carousel from "@/components/Carousel";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { formatTanggal, formatJam } from "@/utils/formatTanggal";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [league, setLeague] = useState([]);
@@ -58,11 +59,14 @@ export default function Home() {
           <div className="p-3 flex flex-col gap-4">
             <p className="text-white">League</p>
             <ul className=" ps-1 gap-4 flex flex-col text-sm text-gray-300">
-              {league.map((item) => {
-                return (
-                  <li
-                    className="cursor-pointer flex gap-2 items-center"
-                    key={item.idLeague}
+              {league.map((item) => (
+                <li
+                  className="cursor-pointer flex gap-2 items-center"
+                  key={item.idLeague}
+                >
+                  <Link
+                    to={`/league/${item.idLeague}`}
+                    className="flex gap-2 items-center"
                   >
                     <img
                       src={`/logos/${item.idLeague}.png`}
@@ -70,9 +74,9 @@ export default function Home() {
                       alt=""
                     />
                     <span>{item.strLeague}</span>
-                  </li>
-                );
-              })}
+                  </Link>
+                </li>
+              ))}
             </ul>
             <p className="text-white">Teams</p>
             <p className="text-white">Player</p>
@@ -252,6 +256,7 @@ export default function Home() {
                 );
               })}
           </div>
+          
         </div>
       </div>
     </>
