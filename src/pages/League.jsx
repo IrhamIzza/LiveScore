@@ -8,19 +8,27 @@ export default function League() {
   const { id } = useParams();
   const [league, setLeague] = useState([]);
   const [nextLeague, setNextLeague] = useState([]);
+  const [pastLeague, setPastLeague] = useState([]);
+  const [standings, setStandings] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function getData() {
     try {
       setLoading(true);
-      const [res1, res2] = await Promise.all([
+      const [res1, res2, res3, res4] = await Promise.all([
         fetch("/api/all_leagues.php"),
         fetch(`/api/eventsnextleague.php?id=${id}`),
+        fetch(`/api/lookuptable.php?l=${id}&s=2025-2026`),
+        fetch(`/api/eventspastleague.php?id=${id}`),
       ]);
       const data1 = await res1.json();
       const data2 = await res2.json();
+      const data3 = await res3.json();
+      const data4 = await res4.json();
       setLeague(data1.leagues);
       setNextLeague(data2.events[0]);
+      setStandings(data3.table);
+      setPastLeague(data4.events[0]);
     } catch (error) {
       console.error(error);
     } finally {
@@ -69,23 +77,15 @@ export default function League() {
           </div>
         </div>
         {/* tengagh */}
-        <div className="w-full">
-          <p className="text-4xl font-medium text-center pb-4">
+        <div className="w-full flex flex-col gap-4">
+          <p className="text-4xl font-medium text-center ">
             {nextLeague.strLeague}
           </p>
           <div className="flex flex-col sm:flex-row gap-2">
-            {/* thumnail gambar */}
-            <div className="rounded-2xl">
-              <img
-                className="rounded-2xl object-contain max-h-60"
-                src={nextLeague.strThumb}
-                alt=""
-              />
-            </div>
-            {/* Kotak Jadwal */}
-            <div className="p-2 bg-gray-700 rounded-2xl flex flex-col gap-3 flex-1">
+            {/*| Kotak Jadwal */}
+            <div className="p-2 bg-gray-700 rounded-2xl flex flex-col gap-4 flex-1">
               <p className="pt-2 font-medium text-xl">Upcoming Match !!!</p>
-              {/* Logo Liga Inggris */}
+              {/*|| Logo Liga */}
               <div className="flex gap-2 items-center ">
                 <img
                   src={`/logos/${nextLeague.idLeague}.png`}
@@ -97,7 +97,7 @@ export default function League() {
                   <span className="text-gray-300">{nextLeague.strCountry}</span>
                 </div>
               </div>
-              {/* kotak Pertama */}
+              {/*|| kotak Pertama */}
               <div className="flex p-2 sm:px-8 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
                 <div className="flex flex-3 ">
                   <div className="flex flex-3 items-center md:gap-2 justify-center md:justify-start">
@@ -130,6 +130,105 @@ export default function League() {
                   </div>
                 )}
               </div>
+            </div>
+            {/*| thumnail gambar */}
+            <div className="rounded-2xl">
+              <img
+                className="rounded-2xl object-contain max-w-[420px]"
+                src={nextLeague.strThumb}
+                alt=""
+              />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            {/*| Kotak past */}
+            <div className="p-2 bg-gray-700 rounded-2xl flex flex-col gap-4 flex-1">
+              <p className="pt-2 font-medium text-xl">Previous Match</p>
+              {/* Logo Liga Inggris */}
+              <div className="flex gap-2 items-center ">
+                <img
+                  src={`/logos/${pastLeague.idLeague}.png`}
+                  className="w-8 h-8"
+                  alt=""
+                />
+                <div className="flex flex-col ">
+                  <span>{pastLeague.strLeague}</span>
+                  <span className="text-gray-300">{pastLeague.strCountry}</span>
+                </div>
+              </div>
+              {/* kotak Pertama */}
+              <div className="flex p-2 sm:px-14 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
+                <div className="flex flex-3 ">
+                  <div className="flex flex-3 items-center md:gap-2 justify-center md:justify-start">
+                    <img
+                      className="w-10 h-10"
+                      src={pastLeague.strHomeTeamBadge}
+                      alt=""
+                    />
+                    {pastLeague.strHomeTeam}
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="my-auto text-center px-4 bg-gray-500 rounded-md">
+                      {pastLeague.intHomeScore}
+                    </div>
+                    <div className=" my-auto text-center px-4 bg-gray-500 rounded-md">
+                      {pastLeague.intHomeScore}
+                    </div>
+                  </div>
+                  <div className="flex flex-3 items-center gap-2 justify-center md:text-right md:justify-end ">
+                    {pastLeague.strAwayTeam}
+                    <img
+                      className="w-10 h-10"
+                      src={pastLeague.strAwayTeamBadge}
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/*| stadings 1 */}
+            <div className="p-5 flex flex-col flex-1 gap-2 text-sm bg-gray-700 max-w-[420px] rounded-2xl">
+              <img
+                src={`/logos/${standings[0]?.idLeague}.png`}
+                alt=""
+                className="w-8 h-8"
+              />
+              <div className="text-base font-medium">
+                {standings[0]?.strLeague} Standings
+              </div>
+              <div className="flex gap-2 justify-between border-b-1">
+                <div className="min-w-2">Pos</div>
+                <div className="flex-1">Team</div>
+                <div className="text-center min-w-8">P</div>
+                <div className="text-center min-w-8">W</div>
+                <div className="text-center min-w-8">D</div>
+                <div className="text-center min-w-8">L</div>
+                <div className="text-center min-w-8">PTS</div>
+              </div>
+
+              {standings &&
+                standings.map((item, index) => {
+                  return (
+                    <div
+                      key={item.idTeam}
+                      className="flex gap-2 justify-between border-b-1"
+                    >
+                      <div className="flex flex-col min-w-[22px] items-center ">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">{item.strTeam}</div>
+                      <div className="text-center min-w-8">
+                        {item.intPlayed}
+                      </div>
+                      <div className="text-center min-w-8">{item.intWin}</div>
+                      <div className="text-center min-w-8">{item.intDraw}</div>
+                      <div className="text-center min-w-8">{item.intLoss}</div>
+                      <div className="text-center min-w-8">
+                        {item.intPoints}
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
