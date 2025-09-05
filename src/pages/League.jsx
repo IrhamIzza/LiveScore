@@ -82,8 +82,16 @@ export default function League() {
             {nextLeague.strLeague}
           </p>
           <div className="flex flex-col sm:flex-row gap-2">
+            {/*| thumnail gambar */}
+            <div className="rounded-2xl md:order-last max-w-[420px]">
+              <img
+                className="rounded-2xl object-contain "
+                src={nextLeague.strThumb}
+                alt=""
+              />
+            </div>
             {/*| Kotak Jadwal */}
-            <div className="p-2 bg-gray-700 rounded-2xl flex flex-col gap-4 flex-1">
+            <div className="p-2 bg-gray-700 rounded-2xl flex flex-col gap-4 flex-1 md:order-first">
               <p className="pt-2 font-medium text-xl">Upcoming Match !!!</p>
               {/*|| Logo Liga */}
               <div className="flex gap-2 items-center ">
@@ -131,20 +139,12 @@ export default function League() {
                 )}
               </div>
             </div>
-            {/*| thumnail gambar */}
-            <div className="rounded-2xl">
-              <img
-                className="rounded-2xl object-contain max-w-[420px]"
-                src={nextLeague.strThumb}
-                alt=""
-              />
-            </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {/*| Kotak past */}
             <div className="p-2 bg-gray-700 rounded-2xl flex flex-col gap-4 flex-1">
               <p className="pt-2 font-medium text-xl">Previous Match</p>
-              {/* Logo Liga Inggris */}
+              {/*|| Logo Liga Inggris */}
               <div className="flex gap-2 items-center ">
                 <img
                   src={`/logos/${pastLeague.idLeague}.png`}
@@ -156,7 +156,7 @@ export default function League() {
                   <span className="text-gray-300">{pastLeague.strCountry}</span>
                 </div>
               </div>
-              {/* kotak Pertama */}
+              {/*|| kotak Pertama */}
               <div className="flex p-2 sm:px-14 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
                 <div className="flex flex-3 ">
                   <div className="flex flex-3 items-center md:gap-2 justify-center md:justify-start">
@@ -187,7 +187,7 @@ export default function League() {
               </div>
             </div>
             {/*| stadings 1 */}
-            <div className="p-5 flex flex-col flex-1 gap-2 text-sm bg-gray-700 max-w-[420px] rounded-2xl">
+            <div className="p-5 flex flex-col flex-1 gap-2 text-sm bg-gray-700 md:max-w-[420px] rounded-2xl">
               <img
                 src={`/logos/${standings[0]?.idLeague}.png`}
                 alt=""
