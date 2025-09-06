@@ -16,10 +16,10 @@ export default function League() {
     try {
       setLoading(true);
       const [res1, res2, res3, res4] = await Promise.all([
-        fetch("/api/all_leagues.php"),
-        fetch(`/api/eventsnextleague.php?id=${id}`),
-        fetch(`/api/lookuptable.php?l=${id}&s=2025-2026`),
-        fetch(`/api/eventspastleague.php?id=${id}`),
+        fetch("https://www.thesportsdb.com/api/v1/json/123/all_leagues.php"),
+        fetch(`https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=${id}`),
+        fetch(`https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=${id}&s=2025-2026`),
+        fetch(`https://www.thesportsdb.com/api/v1/json/123/eventspastleague.php?id=${id}`),
       ]);
       const data1 = await res1.json();
       const data2 = await res2.json();
