@@ -10,7 +10,7 @@ function Navbar() {
     }
     return (
         <>
-        <nav className={`fixed w-full bg-gray-700 p-4 text-white ${!isOpen? 'h-16':''} `}>
+        <nav className={`w-full bg-gray-700 p-4 text-white ${!isOpen? 'h-16':''} `}>
             <div className="flex justify-between items-center">
                 <div className="text-lg font-bold">LiveScore</div>
                 {/* Menu Desktop */}
@@ -30,14 +30,14 @@ function Navbar() {
                 {/* Menu Mobile */}
             </div>
                 {isOpen && (
-                    <ul className="md:hidden py-2 space-y-2">
+                    <ul className="md:hidden py-2 space-y-2 transition-all duration-300">
                         <li className="hover:underline"><Link to="/" onClick={toggleMenu}>Home</Link></li>
                         <li className="hover:underline"><Link to="/about" onClick={toggleMenu}>About</Link></li>
                         <li className="hover:underline"><Link to="/contact" onClick={toggleMenu}>Contact</Link></li>
                     </ul>
                 )}
         </nav>
-        <main className="pt-16"></main>
+        {/* <main className="pt-16"></main> */}
         </>
     );
 

@@ -53,9 +53,9 @@ export default function Home() {
           <i className="ph ph-circle-notch animate-spin text-9xl text-white fixed z-20"></i>
         </div>
       )}
-      <div className="flex justify-between p-2 sm:m-5 gap-5">
+      <div className="flex flex-col md:flex-row justify-between p-2 sm:m-5 gap-5">
         {/* Bagian Kiri  */}
-        <div className="hidden md:flex lg:basis-2/12 bg-gray-700  rounded-2xl">
+        <div className="order-last md:order-first md:flex lg:basis-2/12 bg-gray-700  rounded-2xl">
           <div className="p-3 flex flex-col gap-4">
             <p className="text-white">League</p>
             <ul className=" ps-1 gap-4 flex flex-col text-sm text-gray-300">
@@ -187,8 +187,8 @@ export default function Home() {
           </div>
         </div>
         {/* Bgaian kanan */}
-        <div className="hidden md:flex flex-col lg:basis-3/12 bg-gray-700 text-white rounded-2xl">
-          {/* stadings 1 */}
+        <div className="md:flex flex-col lg:basis-3/12 bg-gray-700 text-white rounded-2xl">
+          {/*| stadings 1 */}
           <div className="p-5 flex flex-col gap-2 text-sm">
             <img
               src={`/logos/${standings[0]?.idLeague}.png`}
@@ -222,7 +222,7 @@ export default function Home() {
                 );
               })}
           </div>
-          {/* stadings 2 */}
+          {/*| stadings 2 */}
           <div className="p-5 flex flex-col gap-2 text-sm">
             <img
               src={`/logos/${standings2[0]?.idLeague}.png`}
