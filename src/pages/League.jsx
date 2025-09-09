@@ -17,9 +17,15 @@ export default function League() {
       setLoading(true);
       const [res1, res2, res3, res4] = await Promise.all([
         fetch("https://www.thesportsdb.com/api/v1/json/123/all_leagues.php"),
-        fetch(`https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=${id}`),
-        fetch(`https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=${id}&s=2025-2026`),
-        fetch(`https://www.thesportsdb.com/api/v1/json/123/eventspastleague.php?id=${id}`),
+        fetch(
+          `https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=${id}`
+        ),
+        fetch(
+          `https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=${id}&s=2025-2026`
+        ),
+        fetch(
+          `https://www.thesportsdb.com/api/v1/json/123/eventspastleague.php?id=${id}`
+        ),
       ]);
       const data1 = await res1.json();
       const data2 = await res2.json();
@@ -38,6 +44,7 @@ export default function League() {
 
   useEffect(() => {
     getData();
+    window.scrollTo(0, 0);
   }, [id]);
 
   return (
@@ -106,11 +113,11 @@ export default function League() {
                 </div>
               </div>
               {/*|| kotak Pertama */}
-              <div className="flex p-2 sm:px-8 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
+              <div className="flex p-2 text-sm md:text-base sm:px-8 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
                 <div className="flex flex-3 ">
                   <div className="flex flex-3 items-center md:gap-2 justify-center md:justify-start">
                     <img
-                      className="w-10 h-10"
+                      className="w-8 md:w-10"
                       src={nextLeague.strHomeTeamBadge}
                       alt=""
                     />
@@ -124,7 +131,7 @@ export default function League() {
                   <div className="flex flex-3 items-center gap-2 justify-center md:text-right md:justify-end ">
                     {nextLeague.strAwayTeam}
                     <img
-                      className="w-10 h-10"
+                      className="w-8 md:w-10"
                       src={nextLeague.strAwayTeamBadge}
                       alt=""
                     />
@@ -140,7 +147,7 @@ export default function League() {
               </div>
             </div>
           </div>
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap ">
             {/*| Kotak past */}
             <div className="p-2 bg-gray-700 rounded-2xl flex flex-col gap-4 flex-1">
               <p className="pt-2 font-medium text-xl">Previous Match</p>
@@ -157,11 +164,11 @@ export default function League() {
                 </div>
               </div>
               {/*|| kotak Pertama */}
-              <div className="flex p-2 sm:px-14 py-1 border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
+              <div className="flex p-2 sm:px-14 py-1 text-sm md:text-base border border-gray-500 rounded-sm items-center gap-1 lg:gap-10">
                 <div className="flex flex-3 ">
                   <div className="flex flex-3 items-center md:gap-2 justify-center md:justify-start">
                     <img
-                      className="w-10 h-10"
+                      className="w-8 md:w-10"
                       src={pastLeague.strHomeTeamBadge}
                       alt=""
                     />
@@ -178,7 +185,7 @@ export default function League() {
                   <div className="flex flex-3 items-center gap-2 justify-center md:text-right md:justify-end ">
                     {pastLeague.strAwayTeam}
                     <img
-                      className="w-10 h-10"
+                      className="w-8 md:w-10"
                       src={pastLeague.strAwayTeamBadge}
                       alt=""
                     />
@@ -196,8 +203,8 @@ export default function League() {
               <div className="text-base font-medium">
                 {standings[0]?.strLeague} Standings
               </div>
-              <div className="flex gap-2 justify-between border-b-1">
-                <div className="min-w-2">Pos</div>
+              <div className="flex md:gap-2 justify-between border-b-1">
+                <div className="min-w-2">No.</div>
                 <div className="flex-1">Team</div>
                 <div className="text-center min-w-8">P</div>
                 <div className="text-center min-w-8">W</div>
@@ -211,7 +218,7 @@ export default function League() {
                   return (
                     <div
                       key={item.idTeam}
-                      className="flex gap-2 justify-between border-b-1"
+                      className="flex md:gap-2 justify-between border-b-1"
                     >
                       <div className="flex flex-col min-w-[22px] items-center ">
                         {index + 1}
@@ -229,6 +236,34 @@ export default function League() {
                     </div>
                   );
                 })}
+            </div>
+          </div>
+          {/* Bagian list League  */}
+          <div className="md:hidden order-last md:order-first lg:basis-2/12 bg-gray-700  rounded-2xl">
+            <div className="p-3 flex flex-col gap-4">
+              <p className="text-white">League</p>
+              <ul className=" ps-1 gap-4 flex flex-col text-sm text-gray-300">
+                {league.map((item) => (
+                  <li
+                    className="cursor-pointer flex gap-2 items-center"
+                    key={item.idLeague}
+                  >
+                    <Link
+                      to={`/league/${item.idLeague}`}
+                      className="flex gap-2 items-center"
+                    >
+                      <img
+                        src={`/logos/${item.idLeague}.png`}
+                        className="w-6 h-6"
+                        alt=""
+                      />
+                      <span>{item.strLeague}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-white">Teams</p>
+              <p className="text-white">Player</p>
             </div>
           </div>
         </div>
