@@ -17,10 +17,18 @@ export default function Home() {
       setLoading(true);
       const [res1, res2, res3, res4, res5] = await Promise.all([
         fetch("https://www.thesportsdb.com/api/v1/json/123/all_leagues.php"),
-        fetch("https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=4328"),
-        fetch("https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=4335"),
-        fetch("https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=4328&s=2025-2026"),
-        fetch("https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=4335&s=2025-2026"),
+        fetch(
+          "https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=4328"
+        ),
+        fetch(
+          "https://www.thesportsdb.com/api/v1/json/123/eventsnextleague.php?id=4335"
+        ),
+        fetch(
+          "https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=4328&s=2025-2026"
+        ),
+        fetch(
+          "https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=4335&s=2025-2026"
+        ),
       ]);
 
       const data1 = await res1.json();
@@ -208,17 +216,19 @@ export default function Home() {
             {standings &&
               standings.map((item, index) => {
                 return (
-                  <div
-                    key={item.idTeam}
-                    className="flex gap-2 justify-between border-b-1"
-                  >
-                    <div className="flex flex-col min-w-[22px] items-center ">
-                      {index + 1}
+                  <Link to={`/team/${item.idTeam}`}>
+                    <div
+                      key={item.idTeam}
+                      className="flex gap-2 justify-between border-b-1"
+                    >
+                      <div className="flex flex-col min-w-[22px] items-center ">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">{item.strTeam}</div>
+                      <div className="text-center min-w-8">{item.intPlayed}</div>
+                      <div className="text-center min-w-8">{item.intPoints}</div>
                     </div>
-                    <div className="flex-1">{item.strTeam}</div>
-                    <div className="text-center min-w-8">{item.intPlayed}</div>
-                    <div className="text-center min-w-8">{item.intPoints}</div>
-                  </div>
+                  </Link>
                 );
               })}
           </div>
@@ -256,7 +266,6 @@ export default function Home() {
                 );
               })}
           </div>
-          
         </div>
       </div>
     </>
