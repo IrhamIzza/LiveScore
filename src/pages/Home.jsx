@@ -225,8 +225,12 @@ export default function Home() {
                         {index + 1}
                       </div>
                       <div className="flex-1">{item.strTeam}</div>
-                      <div className="text-center min-w-8">{item.intPlayed}</div>
-                      <div className="text-center min-w-8">{item.intPoints}</div>
+                      <div className="text-center min-w-8">
+                        {item.intPlayed}
+                      </div>
+                      <div className="text-center min-w-8">
+                        {item.intPoints}
+                      </div>
                     </div>
                   </Link>
                 );
@@ -252,17 +256,23 @@ export default function Home() {
             {standings2 &&
               standings2.map((item, index) => {
                 return (
-                  <div
-                    key={item.idTeam}
-                    className="flex gap-2 justify-between border-b-1"
-                  >
-                    <div className="flex flex-col min-w-[22px] items-center ">
-                      {index + 1}
+                  <Link to={`/team/${item.idTeam}`}>
+                    <div
+                      key={item.idTeam}
+                      className="flex gap-2 justify-between border-b-1"
+                    >
+                      <div className="flex flex-col min-w-[22px] items-center ">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">{item.strTeam}</div>
+                      <div className="text-center min-w-8">
+                        {item.intPlayed}
+                      </div>
+                      <div className="text-center min-w-8">
+                        {item.intPoints}
+                      </div>
                     </div>
-                    <div className="flex-1">{item.strTeam}</div>
-                    <div className="text-center min-w-8">{item.intPlayed}</div>
-                    <div className="text-center min-w-8">{item.intPoints}</div>
-                  </div>
+                  </Link>
                 );
               })}
           </div>
